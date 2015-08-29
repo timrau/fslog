@@ -101,6 +101,7 @@ Available fields of configuration are listed as follows.
 ### "retentionCheck"
    If true, periodically remove expired logs.
    If false, logs will be kept forever.
+<br>Note that, if this is set to **true**, it is possible to remove non-log files in the same directory. Be careful to turn retention checking on with a proper `logdir` to ensure only logs will be removed from file system. 
    <br>Default: **false**.
 
 ### "retentionGranularity"
@@ -112,22 +113,22 @@ Available fields of configuration are listed as follows.
    3. **m**: separated files by minutes. For example, "10m" means ten minutes and "60m" means one hour.
    <br>
  
-Note that the dated-formatted file names depend on the specified granularity. If the granularity is less than one hour, the corresponding file name will disaply to minute information of logging time. Simiarly, if the granularity is less than one day but more than one hour, the file name shows only hour information but hides minutes. 
+Note that the dated-formatted file names depend on the specified granularity. If the granularity is less than one hour, the corresponding file name will display minute information of logging time. Simiarly, if the granularity is less than one day but more than one hour, the file name shows only hour information but hides minutes. 
    <br> Default: "1d" (one log file per day)
 
 ### "retentionMinutes"
    Specify the lifetime to keep each log. Unit is in "minutes".
    This takes effect when `retention` is set to true.
-   <br>Default: 10080 minutes (7 days).
+   <br>Default: 10080 (minutes) (= 7 days).
 
 ### "retentionCheckInterval"
-   Specify the interval to check expired logs. 
+   Specify the interval in minutes to check expired logs under `logdir`. 
    This takes effect when `retention` is set to true.
-   <br>Default: 1440 minutes (1 day).
+   <br>Default: 1440 (minutes) (= 1 day).
 
 ### "logdir"
-   Specify the directory to put log files.
-   <br>Default: "**./**"
+   Specify the directory to store log files. If the directory does not exist, `fslog` will automatically create the directory. It is strongly suggested to specify your own proper directory to store and manage logs. **DO NOT** put important files (such as source codes) under the specified directory. 
+   <br>Default: "**fslog**"
 
 ### "withtime"
    If it is set to true, a timestamp will be embedded into the head of each log message when logging.
@@ -137,8 +138,8 @@ Note that the dated-formatted file names depend on the specified granularity. If
    Specify the naming of log files. 
    For example, if `logname` is specified as "example", log files will be named with an incremental counter:
    "example.0", "example.1", "example.2", ...
-   Otherwise, date-formatted names "fslog-YYYYMMDD.x" ("fslog-" is prefix) are applied to write logs day by day. 
-   <br>Default: (Use date-formatted string "fslog-YYYYMMDD.x" for ).
+   Otherwise, date-formatted names "fslog-YYYYMMDD-HH:MM.x" ("fslog-" is a prefix) are applied to write logs according to the retention granularity (per day by default). 
+   <br>Default: (Use date-formatted string "fslog-YYYYMMDD-HH:MM.x").
 
 <br>
 
